@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../Button/Button';
+import ChildTask from './ChildTask';
 import 'whatwg-fetch';
 
 class Task extends Component {
@@ -8,7 +9,6 @@ class Task extends Component {
 
     this.state = {
       expanded: false
-
     };
 
     this.expandTask = this.expandTask.bind(this);
@@ -37,7 +37,7 @@ class Task extends Component {
 
     fetch(`/api/tasks/${id}/update`, options)
       .then(res => res.json())
-      .then(json => this.props.onComplete(id, 'update', json));
+      .then(json => this.props.onUpdate(id, 'update', json));
   }
 
   deleteTask() {
@@ -45,7 +45,7 @@ class Task extends Component {
 
     fetch(`/api/tasks/${id}`, { method: 'DELETE' })
       .then(() => {
-        this.props.onDelete(id, 'delete');
+        this.props.onUpdate(id, 'delete');
       });
   }
 
@@ -86,7 +86,7 @@ class Task extends Component {
     }
     
     return (
-      <li className="tm-c-task-wrapper" id={this.props._id}>
+      <li className={(this.props.completed) ? "tm-c-task-wrapper tm-c-task-wrapper__completed" : "tm-c-task-wrapper"} id={this.props._id}>
         <div className="tm-c-task-container">
           <header className="tm-c-task-header">
             <span className="tm-c-task-expander" onClick={this.expandTask}> {!this.state.expanded ? '+' : '-'} </span>
@@ -98,6 +98,9 @@ class Task extends Component {
             <div className="tm-c-task-body tm-c-task-body__left">
               <div className="tm-c-task-description">
                 {this.props.description}
+              </div>
+              <div className="tm-c-child-tasks-container">
+                <ChildTask parentId={this.props._id} childTasks={this.props.childTasks} onUpdate={this.props.onUpdate}/>
               </div>
             </div>
             <div className="tm-c-task-body tm-c-task-body__right">

@@ -53,7 +53,12 @@ module.exports = (app) => {
         $or: [
               {'name': {$regex: query}},
               {'description': {$regex: query}},
-              {'tags': {$in: query}}
+              {'tags': {$in: query}},
+              { $or: [
+                  {'childTasks': {$elemMatch: {'description': query}}},
+                  {'childTasks': {$elemMatch: {'name': query}}},
+                ]
+              }
             ]
         })
         .exec()

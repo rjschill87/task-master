@@ -85,7 +85,7 @@ class Home extends Component {
           <ul className="tm-c-tasklist">
             { this.state.tasks.length > 0 &&
               this.state.tasks.map((task) => (
-                <Task {...task} key={task._id} onComplete={this._updateTaskList} onDelete={this._updateTaskList} />
+                <Task {...task} key={task._id} onUpdate={this._updateTaskList}/>
             )) }
           </ul>
         </div>
