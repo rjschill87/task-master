@@ -20,7 +20,7 @@ npm install
 
 Ensure mongoDB is up and running.
 
-Change config/config.js properties to match your mongoDB location / credentials.
+Change `config/config.js` properties to match your mongoDB location / credentials.
 
 Production mode:
 
