@@ -1,8 +1,11 @@
 .tm-c-tasklist-form {
   display: flex;
   flex-direction: column;
-  padding: rem($space-sm);
-  margin: rem($space-sm);
+  padding: rem($space-med);
+  margin: rem($space-med);
+  background-color: $color-white;
+  border-radius: $border-radius-med;
+  box-shadow: $box-shadow-default;
 
   > * {
     margin-bottom: rem($space-xs);

@@ -21,6 +21,10 @@
     box-shadow: $box-shadow-darker;
   }
 
+  &:focus {
+    outline: 0;
+  }
+
   &__primary {
     background-color: $color-primary;
     color: $color-white;
