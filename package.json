@@ -1,11 +1,11 @@
 {
   "name": "taskmaster-project",
   "version": "1.0.0",
-  "description": "Taskmaster Interview Project",
+  "description": "Taskmaster Project",
   "author": "Robert Schillinger",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/arkon/MERN-boilerplate.git"
+    "url": "git+https://github.com/rjschill87/task-master.git"
   },
   "license": "MIT",
   "private": true,
