@@ -1,0 +1,41 @@
+.tm-c-button-container {
+  padding-top: rem($space-sm);
+
+  &__right {
+    align-self: flex-end;
+    justify-self: flex-end;
+  }
+
+  >:not(:last-child) {
+    margin-right: rem($space-sm);
+  }
+}
+
+.tm-c-button {
+  -webkit-appearance: none;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-sm;
+  padding: rem($space-xs);
+
+  &:hover {
+    box-shadow: $box-shadow-darker;
+  }
+
+  &__primary {
+    background-color: $color-primary;
+    color: $color-white;
+    border: $btn-primary-border;
+  }
+
+  &__secondary {
+    background-color: $color-gray2;
+    color: $color-white;
+    border: $btn-secondary-border;
+  }
+
+  &__danger {
+    background-color: $color-danger;
+    color: $color-white;
+    border: $btn-danger-border;
+  }
+}

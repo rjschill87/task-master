@@ -1,0 +1,20 @@
+.tm-c-tasklist-form {
+  display: flex;
+  flex-direction: column;
+  padding: rem($space-sm);
+  margin: rem($space-sm);
+
+  > * {
+    margin-bottom: rem($space-xs);
+  }
+
+  .tm-c-button-container__centered {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.tm-c-tasklist-form-error {
+  color: $color-danger;
+  align-self: center;
+}

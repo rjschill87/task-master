@@ -1,0 +1,75 @@
+.tm-c-task-wrapper {
+  list-style: none;
+  padding: rem($space-sm);
+  background-color: $color-white;
+  border-radius: $border-radius-med;
+  box-shadow: $box-shadow-darker;
+  margin: rem($space-sm) rem($space-sm) 0;
+
+  &:not(:last-child) {
+    margin: rem($space-sm);
+  }
+}
+
+.tm-c-task-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.tm-c-task-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.tm-c-task-header-title {
+  font-family: $headings-font-family;
+  font-size: rem($font-size-med);
+  margin: rem($space-sm) 0;
+}
+
+.tm-c-task-expander {
+  font-size: $font-size-med;
+  margin-right: rem($space-xs);
+}
+
+.tm-c-task-body-container {
+  display: none;
+
+  &__expanded {
+    display: flex;
+  }
+}
+
+.tm-c-task-body {
+  display: flex;
+  justify-content: space-between;
+  font-size: $font-size-xs;
+  margin-left: rem($space-sm);
+
+  &__left {
+    flex: 2;
+  }
+
+  &__right {
+    flex-direction: column;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: flex-start;
+  }
+}
+
+.tm-c-task-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-left: rem($space-sm);
+}
+
+.tm-c-task-tags-container {
+  align-self: flex-end;
+}
+
+.tm-c-task-tags {
+  font-size: rem($font-size-xs);
+  font-style: italic;
+}

@@ -1,0 +1,35 @@
+.tm-c-tasklist-wrapper {
+  padding: rem($space-sm);
+}
+
+.tm-c-tasklist-container {
+  display: flex;
+  justify-content: space-between;
+  padding: rem($space-sm);
+}
+
+.tm-c-tasklist {
+  width: 100%;
+}
+
+.tm-c-tasklist-header {
+  display: flex;
+
+  &__left {
+    align-items: center;
+  }
+}
+
+.tm-c-tasklist-header-title {
+  font-family: $headings-font-family;
+  margin: 0;
+}
+
+.tm-c-tasklist {
+  padding: 0;
+  margin: 0;
+}
+
+.tm-c-tasklist-footer {
+  padding: rem($space-sm);
+}
