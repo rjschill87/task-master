@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../Button/Button';
-import ChildTask from './ChildTask';
+import ChildTaskList from './ChildTaskList';
 import moment from 'moment';
 import 'whatwg-fetch';
 
@@ -114,7 +114,7 @@ class Task extends Component {
                 {this.props.description}
               </div>
               <div className="tm-c-child-tasks-container">
-                <ChildTask parentId={this.props._id} childTasks={this.props.childTasks} onUpdate={this.props.onUpdate}/>
+                <ChildTaskList parentId={this.props._id} childTasks={this.props.childTasks} onUpdate={this.props.onUpdate} />
               </div>
             </div>
             <div className="tm-c-task-body tm-c-task-body__right">
