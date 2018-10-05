@@ -10,7 +10,7 @@
   &__compact {
     flex-direction: row;
     padding: rem($space-sm);
-    margin: rem($space-sm);
+    margin: rem($space-sm) 0;
 
     > * {
       flex:1;

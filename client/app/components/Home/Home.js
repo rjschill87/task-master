@@ -34,39 +34,36 @@ class Home extends Component {
   _refreshTasks() {
     fetch('/api/tasks')
       .then(res => res.json())
-      .then(json => {
-        this.setState({
-          tasks: json
-        });
-      });
+      .then(tasks => this.setState({tasks}));
   }
 
   _updateTaskList(id, action, updatedTask = {}, newTaskList = []) {
-    let updatedTasks = [];
+    let tasks = [];
 
     switch (action) {
       case 'add' :
-        updatedTasks = this.state.tasks;
-        updatedTasks.push(updatedTask);
+        tasks = this.state.tasks;
+        tasks.push(updatedTask);
         break;
       case 'update' :
-        updatedTasks = this.state.tasks.map((task) => {
+        tasks = this.state.tasks.map((task) => {
           return (task._id === id) ? updatedTask : task;
         });
         break;
       case 'delete' :
-        updatedTasks = this.state.tasks.filter(task => task._id != id);
+        tasks = this.state.tasks.filter(task => task._id != id);
         break;
       case 'search' :
-        updatedTasks = newTaskList;
+        tasks = newTaskList;
         break;
       default :
-        updatedTasks = this._refreshTasks();
+        tasks = this._refreshTasks();
         break;
     }
     
     this.setState({
-      tasks: updatedTasks
+      tasks,
+      formActive: false
     });
   }
 

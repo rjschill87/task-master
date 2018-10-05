@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../Button/Button';
+import _ from 'lodash';
 
 class ChildTask extends Component {
   constructor(props) {
@@ -13,6 +14,9 @@ class ChildTask extends Component {
     };
 
     this.addChildTask = this.addChildTask.bind(this);
+    this.completeChildTask = this.completeChildTask.bind(this);
+    this.deleteChildTask = this.deleteChildTask.bind(this);
+    this._updateParentTask = this._updateParentTask.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.expandList = this.expandList.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
@@ -21,15 +25,36 @@ class ChildTask extends Component {
   }
 
   addChildTask() {
-    const id = this.props.parentId;
-
     const newTask = {
+      _id: _.uniqueId(),
       name: this.state.name,
-      description: this.state.description
+      description: this.state.description,
+      completed: false
     };
 
     let childTasks = this.props.childTasks;
     childTasks.push(newTask);
+
+    this.refs.childTaskForm.reset();
+    this._updateParentTask(childTasks);
+  }
+
+  completeChildTask(updatedTask) {
+    updatedTask.completed = true;
+    const childTasks = this.props.childTasks.map((task) => {
+      return (updatedTask._id === task._id) ? updatedTask : task;
+    });
+
+    this._updateParentTask(childTasks);
+  }
+
+  deleteChildTask(updatedTask) {
+    const childTasks = this.props.childTasks.filter(task => task._id !== updatedTask._id);
+    this._updateParentTask(childTasks);
+  }
+
+  _updateParentTask(childTasks) {
+    const id = this.props.parentId;
 
     const options = {
       method: 'PUT',
@@ -43,7 +68,7 @@ class ChildTask extends Component {
     fetch(`/api/tasks/${id}/update`, options)
       .then(res => res.json())
       .then(json => {
-        this.setState({ formActive: false });
+        this.setState({ formActive: false, listExpanded: true });
         this.props.onUpdate(id, 'update', json);
       });
   }
@@ -67,14 +92,35 @@ class ChildTask extends Component {
   }
 
   renderChildTasks() {
-    let tasks = this.props.childTasks.map((task, i) => (
-      <li className="tm-c-task-body tm-c-task-body__childlist" key={i}>
-        <div className="tm-c-child-task-body">
-          <div className="tm-c-task-header-title tm-c-task-header-title__child">{task.name}</div>
-          <div className="tm-c-child-task-text">{task.description}</div>
-        </div>
-      </li>
-    ));
+    let tasks = this.props.childTasks.map((task, i) => {
+      const cardClass = (task.completed) ? 'tm-c-task-body tm-c-task-body__childlist tm-c-task-body__childlist-completed' : 'tm-c-task-body tm-c-task-body__childlist';
+      const titleClass = (task.completed) ? 'tm-c-task-header-title tm-c-task-header-title__child tm-c-task-header-title__child-completed' : 'tm-c-task-header-title tm-c-task-header-title__child';
+      return (
+        <li className={cardClass} key={i}>
+          <div className="tm-c-child-task-body">
+            <div className={titleClass}>{task.name}</div>
+            <div className="tm-c-child-task-text">{task.description}</div>
+          </div>
+          <div className="tm-c-button-container">
+            {
+              !task.completed &&
+              <Button
+                  modifiers={['primary']}
+                  onClick={() => {this.completeChildTask(task)}}
+                  text='✓'
+                  type='button'
+              />
+            }
+            <Button
+              modifiers={['danger']}
+              onClick={() => {this.deleteChildTask(task)}}
+              text='X'
+              type='button'
+            />
+          </div>
+        </li>
+      )
+    });
 
     return tasks;
   }
@@ -95,21 +141,9 @@ class ChildTask extends Component {
           <h3 className="tm-c-tasklist-header-title">
             No child tasks found.
           </h3>
-          <div className="tm-c-button-container">
-            {
-              !this.state.formActive &&
-              <Button
-                modifiers={['primary']}
-                onClick={this.toggleForm}
-                text='New Child Task'
-                type='button'
-              />
-            }
-          </div>
         </header>
       )
     }
-    
   }
 
   render() {
@@ -128,10 +162,10 @@ class ChildTask extends Component {
         {
           this.state.formActive &&
           <div className="tm-c-child-tasklist-form-container">
-            <form onSubmit={this.addChildTask} className="tm-c-tasklist-form tm-c-tasklist-form__compact">
+            <form onSubmit={this.addChildTask} ref="childTaskForm" className="tm-c-tasklist-form tm-c-tasklist-form__compact">
               <input type="text" name="name" placeholder="Task Name" value={this.state.name} onChange={this.handleChange} />
               <input type="text" name="description" placeholder="Description" value={this.state.description} onChange={this.handleChange} />
-              <div class="tm-c-button-container">
+              <div className="tm-c-button-container">
                 <Button 
                   modifiers={['primary']}
                   onClick={this.addChildTask}
@@ -148,6 +182,14 @@ class ChildTask extends Component {
             </form>
           </div>
         }
+        <div className="tm-c-button-container">
+          <Button
+            modifiers={['primary']}
+            onClick={this.toggleForm}
+            text='New Child Task'
+            type='button'
+          />
+        </div>
       </div>
     )
   }

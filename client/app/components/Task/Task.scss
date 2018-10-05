@@ -39,12 +39,17 @@
   &__child {
     font-size: rem($font-size-sm);
     margin: 0 rem($space-sm);
+
+    &-completed {
+      text-decoration: line-through;
+    }
   }
 }
 
 .tm-c-task-expander {
   font-size: $font-size-med;
   margin-right: rem($space-xs);
+  cursor: pointer;
 }
 
 .tm-c-task-body-container {
@@ -81,6 +86,11 @@
     transition: all 0.25s ease-in-out;
     background-color: $color-white;
     margin-left: 0;
+    margin-bottom: rem($space-sm);
+
+    &-completed {
+      opacity: 0.35;
+    }
   }
 
   &__childlist:hover {

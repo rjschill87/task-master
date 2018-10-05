@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '../Button/Button';
 import ChildTask from './ChildTask';
+import moment from 'moment';
 import 'whatwg-fetch';
 
 class Task extends Component {
@@ -15,6 +16,7 @@ class Task extends Component {
     this.completeTask = this.completeTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
     this.renderTags = this.renderTags.bind(this);
+    this.createTimeString = this.createTimeString.bind(this);
   }
 
   expandTask() {
@@ -52,6 +54,18 @@ class Task extends Component {
   renderTags() {
     let tags = this.props.tags;
     return tags.length > 1 ? tags.join(', ') : tags.toString();
+  }
+
+  createTimeString() {
+    let time;
+
+    if (this.props.due) {
+      time = moment(this.props.due).format("dddd, MMMM Do YYYY");
+      return (<div className="tm-c-task-assignee">
+                Due: {time}
+              </div>
+      );
+    }
   }
 
   render() {
@@ -106,6 +120,9 @@ class Task extends Component {
             <div className="tm-c-task-body tm-c-task-body__right">
               <div className="tm-c-task-assignee">
                 {this.props.assignedTo != '' ? 'Assigned to ' + this.props.assignedTo : ''}
+              </div>
+              <div className="tm-c-task-assignee">
+                {this.createTimeString()}
               </div>
               <div className="tm-c-task-points">
                 {this.props.points} pts
