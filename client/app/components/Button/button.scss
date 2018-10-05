@@ -1,4 +1,10 @@
 .tm-c-button-container {
+  &__compact {
+    display: flex;
+    justify-content: flex-end;
+    flex: 0 1 auto;
+  }
+
   &__right {
     align-self: flex-end;
     justify-self: flex-end;

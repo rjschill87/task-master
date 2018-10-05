@@ -125,7 +125,7 @@ class Task extends Component {
                 {this.createTimeString()}
               </div>
               <div className="tm-c-task-points">
-                {this.props.points} pts
+                {this.props.points && parseInt(this.props.points) ? this.props.points + ' pts.' : ''}
               </div>
             </div>
           </div>

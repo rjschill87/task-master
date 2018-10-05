@@ -33,9 +33,9 @@ class ChildTask extends Component {
     };
 
     let childTasks = this.props.childTasks;
+
     childTasks.push(newTask);
 
-    this.refs.childTaskForm.reset();
     this._updateParentTask(childTasks);
   }
 
@@ -50,6 +50,7 @@ class ChildTask extends Component {
 
   deleteChildTask(updatedTask) {
     const childTasks = this.props.childTasks.filter(task => task._id !== updatedTask._id);
+
     this._updateParentTask(childTasks);
   }
 
@@ -87,6 +88,8 @@ class ChildTask extends Component {
 
   toggleForm() {
     this.setState({
+      name: '',
+      description: '',
       formActive: !this.state.formActive
     });
   }
@@ -162,10 +165,10 @@ class ChildTask extends Component {
         {
           this.state.formActive &&
           <div className="tm-c-child-tasklist-form-container">
-            <form onSubmit={this.addChildTask} ref="childTaskForm" className="tm-c-tasklist-form tm-c-tasklist-form__compact">
+            <form onSubmit={this.addChildTask} ref="childform" className="tm-c-tasklist-form tm-c-tasklist-form__compact">
               <input type="text" name="name" placeholder="Task Name" value={this.state.name} onChange={this.handleChange} />
               <input type="text" name="description" placeholder="Description" value={this.state.description} onChange={this.handleChange} />
-              <div className="tm-c-button-container">
+              <div className="tm-c-button-container tm-c-button-container__compact">
                 <Button 
                   modifiers={['primary']}
                   onClick={this.addChildTask}
