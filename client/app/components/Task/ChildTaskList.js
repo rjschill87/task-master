@@ -21,7 +21,6 @@ class ChildTaskList extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.expandList = this.expandList.bind(this);
     this.toggleForm = this.toggleForm.bind(this);
-    this.renderChildTasks = this.renderChildTasks.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
   }
 
@@ -95,21 +94,6 @@ class ChildTaskList extends Component {
     });
   }
 
-  renderChildTasks() {
-    let tasks = this.props.childTasks.map((task) => {
-      return (
-        <ChildTask
-          {...task}
-          key={task._id}
-          onComplete={() => {this.completeChildTask(task)}}
-          onDelete={() => this.deleteChildTask(task)}
-        />
-      )
-    });
-
-    return tasks;
-  }
-
   renderHeader() {
     if (this.props.childTasks.length > 0) {
       return (
@@ -140,7 +124,14 @@ class ChildTaskList extends Component {
           <ul className="tm-c-child-tasklist">
             {
               this.props.childTasks.length > 0 &&
-              this.renderChildTasks()
+              this.props.childTasks.map(task => (
+                <ChildTask
+                  {...task}
+                  key={task._id}
+                  onComplete={() => {this.completeChildTask(task)}}
+                  onDelete={() => this.deleteChildTask(task)}
+                />
+              ))
             }
           </ul>
         }

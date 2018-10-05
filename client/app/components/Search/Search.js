@@ -16,7 +16,9 @@ class Search extends Component {
   }
 
   handleChange(event) {
-    clearTimeout(this.timer);
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
 
     this.setState({
       [event.target.name]: event.target.value
@@ -24,7 +26,7 @@ class Search extends Component {
       if (this.state.query == '') {
         this.props.clear();
       } else {
-        this.timer = setTimeout(this._search(), 1000);
+        this.timer = setTimeout(this._search, 1000);
       }
     });
   }
@@ -42,6 +44,7 @@ class Search extends Component {
     fetch('/api/tasks/search', options)
       .then(res => res.json())
       .then(tasks => {
+        clearTimeout(this.timer);
         this.props.search(0, 'search', {}, tasks);
       });
   }
