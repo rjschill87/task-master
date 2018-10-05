@@ -16,7 +16,7 @@ class Home extends Component {
     };
 
     this.toggleNewTask = this.toggleNewTask.bind(this);
-
+    this.renderTasklist = this.renderTasklist.bind(this);
     this._refreshTasks = this._refreshTasks.bind(this);
     this._updateTaskList = this._updateTaskList.bind(this);
   }
@@ -67,7 +67,9 @@ class Home extends Component {
     });
   }
 
-  render() {
+  renderTasklist() {
+    const { tasks } = this.state;
+
     let tasklist = (
       <div className="tm-c-tasklist-container">
         <span className="tm-c-tasklist-container-text">
@@ -76,18 +78,24 @@ class Home extends Component {
       </div>
     );
 
-    if (this.state.tasks.length > 0) {
+    if (tasks.length > 0) {
       tasklist = (
         <div className="tm-c-tasklist-container">
           <ul className="tm-c-tasklist">
-            { this.state.tasks.length > 0 &&
-              this.state.tasks.map((task) => (
+            {
+              tasks.map((task) => (
                 <Task {...task} key={task._id} onUpdate={this._updateTaskList}/>
-            )) }
+              ))
+            }
           </ul>
         </div>
       );
     }
+
+    return tasklist;
+  }
+
+  render() {
 
     return (
       <div className="tm-c-tasklist-wrapper">
@@ -102,7 +110,7 @@ class Home extends Component {
             />
           </div>
         </header>
-        {tasklist}
+        {this.renderTasklist()}
         {
           this.state.formActive &&
           <TaskForm onSubmit={this._updateTaskList} active={this.state.formActive} onCancel={this.toggleNewTask}/>
