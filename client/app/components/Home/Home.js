@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import update from 'immutability-helper';
+import ls from 'local-storage';
 import 'whatwg-fetch';
 
 import Task from '../Task/Task';
@@ -19,10 +23,18 @@ class Home extends Component {
     this.renderTasklist = this.renderTasklist.bind(this);
     this._refreshTasks = this._refreshTasks.bind(this);
     this._updateTaskList = this._updateTaskList.bind(this);
+    this.moveTask = this.moveTask.bind(this);
   }
 
   componentDidMount() {
-    this._refreshTasks();
+    let tasks = ls.get('tasks');
+    if (tasks) {
+      this.setState({
+        tasks
+      });
+    } else {
+      this._refreshTasks();
+    }
   }
 
   toggleNewTask() {
@@ -65,6 +77,23 @@ class Home extends Component {
       tasks,
       formActive: false
     });
+
+    ls.set('tasks', tasks);
+  }
+
+  moveTask(dragIndex, hoverIndex) {
+    const { tasks } = this.state;
+    const dragTask = tasks[dragIndex];
+
+    this.setState(
+      update(this.state, {
+        tasks: {
+          $splice: [[dragIndex, 1], [hoverIndex, 0, dragTask]]
+        }
+      })
+    );
+
+    ls.set('tasks', this.state.tasks);
   }
 
   renderTasklist() {
@@ -83,8 +112,8 @@ class Home extends Component {
         <div className="tm-c-tasklist-container">
           <ul className="tm-c-tasklist">
             {
-              tasks.map((task) => (
-                <Task {...task} key={task._id} onUpdate={this._updateTaskList}/>
+              tasks.map((task, i) => (
+                <Task {...task} index={i} moveTask={this.moveTask} key={task._id} onUpdate={this._updateTaskList}/>
               ))
             }
           </ul>
@@ -133,4 +162,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default DragDropContext(HTML5Backend)(Home);

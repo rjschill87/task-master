@@ -23,7 +23,6 @@ class ChildTask extends Component {
             !this.props.completed &&
             <Button
                 modifiers={['primary']}
-                // onClick={() => {this.completeChildTask(task)}}
                 onClick={this.props.onComplete}
                 text='✓'
                 type='button'
@@ -31,7 +30,6 @@ class ChildTask extends Component {
           }
           <Button
             modifiers={['danger']}
-            // onClick={() => {this.deleteChildTask(task)}}
             onClick={this.props.onDelete}
             text='X'
             type='button'
