@@ -141,7 +141,7 @@
 .tm-c-task-footer {
   display: flex;
   justify-content: space-between;
-  margin-left: rem($space-sm);
+  margin: rem($space-sm);
 }
 
 .tm-c-task-tags-container {
@@ -151,4 +151,15 @@
 .tm-c-task-tags {
   font-size: rem($font-size-xs);
   font-style: italic;
+}
+
+.tm-c-task-error-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex: 1;
+  margin-left: rem($space-sm);
+}
+.tm-c-tasklist-error {
+  color: $color-danger;
 }

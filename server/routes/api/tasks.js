@@ -1,5 +1,21 @@
 const Task = require('../../models/Tasks');
 
+const removeFromBlockers = (taskId) => {
+  Task.find({'dependentTasks.value': taskId})
+    .exec()
+    .then((tasks) => {
+      if (tasks.length > 0) {
+        for (let task of tasks) {
+          if (task.dependentTasks.name != '') {
+            Task.findOneAndUpdate({_id: task._id}, {dependentTasks: {name: '', value: ''}}).exec();
+          }
+        }
+      }
+
+      return;
+  });
+}
+
 module.exports = (app) => {
   app.get('/api/tasks', (req, res, next) => {
     Task.find()
@@ -7,6 +23,17 @@ module.exports = (app) => {
         .then((tasks) => res.json(tasks))
         .catch((err) => next(err));
   });
+
+  app.get('/api/tasks/:id', (req, res, next) => {
+    if (!req.params.id) {
+      return next();
+    }
+
+    Task.findOne({ _id: req.params.id })
+      .exec()
+      .then((task) => res.json(task))
+      .catch((err) => next(err));
+  })
 
   app.post('/api/tasks/', (req, res, next) => {
     if (!req.body) {
@@ -27,7 +54,10 @@ module.exports = (app) => {
 
     Task.findOneAndDelete({ _id: req.params.id })
         .exec()
-        .then(() => res.json())
+        .then(() => {
+          const cleaned = removeFromBlockers(req.params.id);
+          return res.json();
+        })
         .catch((err) => next(err));
   });
 

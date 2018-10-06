@@ -158,14 +158,17 @@ class ChildTaskList extends Component {
             </form>
           </div>
         }
-        <div className="tm-c-button-container">
-          <Button
-            modifiers={['primary']}
-            onClick={this.toggleForm}
-            text='New Child Task'
-            type='button'
-          />
-        </div>
+        {
+          !this.props.parentCompleted &&
+          <div className="tm-c-button-container">
+            <Button
+              modifiers={['primary']}
+              onClick={this.toggleForm}
+              text='New Child Task'
+              type='button'
+            />
+          </div>
+        }
       </div>
     )
   }

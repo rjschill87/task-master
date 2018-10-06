@@ -66,11 +66,13 @@ class Task extends Component {
     super(props);
 
     this.state = {
-      expanded: false
+      expanded: false,
+      error: false,
+      errorMessage: ''
     };
 
     this.expandTask = this.expandTask.bind(this);
-    this.completeTask = this.completeTask.bind(this);
+    this.verifyTask = this.verifyTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
   }
 
@@ -80,9 +82,32 @@ class Task extends Component {
     });
   }
 
-  completeTask() {
-    const id = this.props._id;
+  verifyTask() {
+    const { _id, dependentTasks } = this.props;
 
+    if (dependentTasks.value != '') {
+      const dtId = dependentTasks.value;
+
+      fetch(`/api/tasks/${dtId}`, {method: 'GET'})
+        .then(res => res.json())
+        .then(task => {
+          const completed = task.completed;
+
+          if (completed) {
+            this.completeTask(_id);
+          } else {
+            this.setState({
+              error: true,
+              errorMessage: 'A dependent task must be completed first.'
+            });
+          }
+        });
+    } else {
+      this.completeTask(_id);
+    }
+  }
+
+  completeTask(id) {
     const options = {
       method: 'PUT',
       headers: {
@@ -150,6 +175,9 @@ class Task extends Component {
       assignedTo,
       points,
       priority,
+      tags,
+      dependentTasks,
+      scrollTo,
       isDragging,
       connectDragSource,
       connectDropTarget
@@ -172,11 +200,17 @@ class Task extends Component {
               </header>
               <div className={(this.state.expanded) ? 'tm-c-task-body-container tm-c-task-body-container__expanded' : 'tm-c-task-body-container'}>
                 <div className="tm-c-task-body tm-c-task-body__left">
+                  {
+                    dependentTasks.name != '' &&
+                    <div className="tm-c-task-body-subtitle" onClick={() => {scrollTo(dependentTasks.value)}}>
+                      <strong>{dependentTasks.name}</strong> must be completed first.
+                    </div>
+                  }
                   <div className="tm-c-task-description">
                     {description}
                   </div>
                   <div className="tm-c-child-tasks-container">
-                    <ChildTaskList parentId={_id} childTasks={childTasks} onUpdate={onUpdate} />
+                    <ChildTaskList parentCompleted={completed} parentId={_id} childTasks={childTasks} onUpdate={onUpdate} />
                   </div>
                 </div>
                 <div className="tm-c-task-body tm-c-task-body__right">
@@ -197,17 +231,12 @@ class Task extends Component {
               {
                 this.state.expanded &&
                 <footer className="tm-c-task-footer">
-                  <div className="tm-c-task-tags-container">
-                    <span className="tm-c-task-tags">
-                      Tags: {this.renderTags()}
-                    </span>
-                  </div>
                   <div className="tm-c-button-container tm-c-button-container__right">
                     {
                       !completed &&
                       <Button
                         modifiers={['primary']}
-                        onClick={this.completeTask}
+                        onClick={this.verifyTask}
                         text="Complete"
                         type="Button"
                       />
@@ -219,6 +248,18 @@ class Task extends Component {
                       type="Button"
                     />
                   </div>
+                  <div className="tm-c-task-error-container">
+                    {
+                      this.state.error &&
+                      <div className="tm-c-tasklist-error">{`Error: ${this.state.errorMessage}`}</div>
+                    }
+                  </div>
+                  <div className="tm-c-task-tags-container">
+                    <span className="tm-c-task-tags">
+                      {tags && tags.length > 1 ? `Tags: ${this.renderTags()}` : ''}
+                    </span>
+                  </div>
+                  
                 </footer>
               }
             </div>

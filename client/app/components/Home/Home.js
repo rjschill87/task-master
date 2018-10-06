@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { findDOMNode } from 'react-dom';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
@@ -24,6 +25,7 @@ class Home extends Component {
     this._refreshTasks = this._refreshTasks.bind(this);
     this._updateTaskList = this._updateTaskList.bind(this);
     this.moveTask = this.moveTask.bind(this);
+    this.scrollTo = this.scrollTo.bind(this);
   }
 
   componentDidMount() {
@@ -107,13 +109,13 @@ class Home extends Component {
       </div>
     );
 
-    if (tasks.length > 0) {
+    if (tasks && tasks.length > 0) {
       tasklist = (
         <div className="tm-c-tasklist-container">
           <ul className="tm-c-tasklist">
             {
               tasks.map((task, i) => (
-                <Task {...task} index={i} moveTask={this.moveTask} key={task._id} onUpdate={this._updateTaskList}/>
+                <Task {...task} index={i} moveTask={this.moveTask} key={task._id} ref={task._id} onUpdate={this._updateTaskList} scrollTo={this.scrollTo}/>
               ))
             }
           </ul>
@@ -124,8 +126,12 @@ class Home extends Component {
     return tasklist;
   }
 
-  render() {
+  scrollTo(taskId) {
+    const node = findDOMNode(this.refs[taskId]);
+    node.scrollIntoView({behavior: 'smooth'});
+  }
 
+  render() {
     return (
       <div className="tm-c-tasklist-wrapper">
         <header className="tm-c-tasklist-container">
@@ -138,11 +144,11 @@ class Home extends Component {
               clear={this._refreshTasks}
             />
           </div>
-        </header>
+        </header> 
         {this.renderTasklist()}
         {
           this.state.formActive &&
-          <TaskForm onSubmit={this._updateTaskList} active={this.state.formActive} onCancel={this.toggleNewTask}/>
+          <TaskForm tasks={this.state.tasks} onSubmit={this._updateTaskList} active={this.state.formActive} onCancel={this.toggleNewTask}/>
         }
         <footer className="tm-c-tasklist-footer">
           {

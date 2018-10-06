@@ -18,7 +18,8 @@ class TaskForm extends Component {
       completed: false,
       formError: false,
       errorMessage: '',
-      priority: ''
+      priority: '',
+      dependentTasks: {name: '', value: ''}
     };
 
     this.cancel = this.cancel.bind(this);
@@ -35,9 +36,18 @@ class TaskForm extends Component {
     const target = event.target.name;
     const value = event.target.value;
 
-    let state = {
-      [target]: value
-    };
+    let state;
+
+    if (target == 'dependentTasks') {
+      const text = event.target.options[event.target.selectedIndex].text;
+      state = {
+        [target]: {name: text, value}
+      }
+    } else {
+      state = {
+        [target]: value
+      }
+    }
 
     if (target === 'name' || target === 'due') {
       state.formError = false;
@@ -61,7 +71,8 @@ class TaskForm extends Component {
           points: this.state.points,
           due: this.state.due,
           assignedTo: this.state.assignedTo,
-          priority: this.state.priority
+          priority: this.state.priority,
+          dependentTasks: this.state.dependentTasks
         };
   
         this._submitTask(new_task);
@@ -111,6 +122,19 @@ class TaskForm extends Component {
       });
   }
 
+  renderTaskDropdown() {
+    const { tasks } = this.props;
+    let options;
+
+    if (tasks && tasks.length > 0) {
+      options = tasks.map((task, i) => (
+        <option key={i} value={task._id}>{task.name}</option>
+      ));
+    }
+
+    return options;
+  }
+
   render() {
     return (
       <form onSubmit={this.formatTask} ref="taskform" className="tm-c-tasklist-form">
@@ -128,6 +152,12 @@ class TaskForm extends Component {
             <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
+          </select>
+        </div>
+        <div className="tm-c-form-group">
+          <select name="dependentTasks" value={this.state.dependentTasks.value} onChange={this.handleChange} className="tm-c-select">
+            <option value="">Dependent task</option>
+            {this.renderTaskDropdown()}
           </select>
         </div>
         <div className="tm-c-form-group">

@@ -8,6 +8,7 @@
   &__right {
     align-self: flex-end;
     justify-self: flex-end;
+    flex: 0 1 auto;
   }
 
   >:not(:last-child) {
