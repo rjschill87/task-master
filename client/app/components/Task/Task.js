@@ -155,13 +155,13 @@ class Task extends Component {
                   </div>
                 </div>
                 <div className="tm-c-task-body tm-c-task-body__right">
-                  <div className="tm-c-task-assignee">
+                  <div className="tm-c-task-details">
                     {this.props.assignedTo != '' ? 'Assigned to ' + this.props.assignedTo : ''}
                   </div>
-                  <div className="tm-c-task-assignee">
+                  <div className="tm-c-task-details">
                     {this.createTimeString()}
                   </div>
-                  <div className="tm-c-task-points">
+                  <div className="tm-c-task-details">
                     {this.props.points && parseInt(this.props.points) ? this.props.points + ' pts.' : ''}
                   </div>
                 </div>
