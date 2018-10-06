@@ -15,8 +15,21 @@
     box-shadow: $box-shadow-darker;
   }
 
+  &__high-priority {
+    border-left: $border-danger;
+  }
+
+  &__medium-priority {
+    border-left: $border-warning;
+  }
+  
+  &__low-priority {
+    border-left: $border-alert;
+  }
+  
   &__completed {
     opacity: 0.35 !important;
+    border-left: 5px solid $color-success;
   }
 }
 

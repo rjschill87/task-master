@@ -17,7 +17,8 @@ class TaskForm extends Component {
       assignedTo: '',
       completed: false,
       formError: false,
-      errorMessage: ''
+      errorMessage: '',
+      priority: ''
     };
 
     this.cancel = this.cancel.bind(this);
@@ -59,7 +60,8 @@ class TaskForm extends Component {
           tags: tags,
           points: this.state.points,
           due: this.state.due,
-          assignedTo: this.state.assignedTo
+          assignedTo: this.state.assignedTo,
+          priority: this.state.priority
         };
   
         this._submitTask(new_task);
@@ -112,12 +114,26 @@ class TaskForm extends Component {
   render() {
     return (
       <form onSubmit={this.formatTask} ref="taskform" className="tm-c-tasklist-form">
-        <input type="text" name="name" placeholder="Task Name" value={this.state.name} onChange={this.handleChange} />
-        <textarea name="description" placeholder="Description" value={this.state.description} onChange={this.handleChange} />
-        <input type="text" name="tags" placeholder="Tags, separated by comma" value={this.state.tags} onChange={this.handleChange} />
-        <input type="number" name="points" placeholder="Points" value={this.state.points} onChange={this.handleChange} />
-        <input type="text" name="assignedTo" placeholder="Assignee" value={this.state.assignedTo} onChange={this.handleChange} />
-        <input type="text" name="due" placeholder="Due Date (ex: 01/31/1970)" value={this.state.due} onChange={this.handleChange} />
+        <div className="tm-c-form-group">
+          <input type="text" name="name" placeholder="Task Name" value={this.state.name} onChange={this.handleChange} />
+          <input type="text" name="assignedTo" placeholder="Assignee" value={this.state.assignedTo} onChange={this.handleChange} />
+        </div>
+        <div className="tm-c-form-group">
+          <textarea name="description" placeholder="Description" value={this.state.description} onChange={this.handleChange} />
+        </div>
+        <div className="tm-c-form-group">  
+          <input type="text" name="due" placeholder="Due Date (ex: 01/31/1970)" value={this.state.due} onChange={this.handleChange} />
+          <select name="priority" value={this.state.value} onChange={this.handleChange} className="tm-c-select">
+            <option value="">Priority</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+        <div className="tm-c-form-group">
+          <input type="text" name="tags" placeholder="Tags, separated by comma" value={this.state.tags} onChange={this.handleChange} />
+          <input type="number" name="points" placeholder="Points" value={this.state.points} onChange={this.handleChange} />
+        </div>
         {
           this.state.formError &&
           <div className="tm-c-tasklist-form-error">{"Error: " + this.state.errorMessage}</div>

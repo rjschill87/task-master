@@ -6,6 +6,7 @@ const TaskSchema = new Schema({
   description: { type: String, default: '' },
   tags: { type: Array, default: [] },
   points: { type: Number, default: 0 },
+  priority: { type: String, default: '' },
   dependentTasks: { type: Array, default: [] },
   due: Date,
   childTasks: { type: Array, default: [] },

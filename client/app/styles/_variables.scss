@@ -4,6 +4,7 @@
 $color-primary: #4d90fc;
 $color-secondary: #5bc0dd;
 $color-success: #60bf60;
+$color-alert: #ffcc00;
 $color-warning: #ff9800;
 $color-danger: #de4b33;
 $color-gray0: #37474f;
@@ -13,8 +14,17 @@ $color-gray3: #afb5b9;
 $color-gray4: #c3c7ca;
 $color-gray5: #f4f4f4;
 $color-gray6: #f4f4f4;
-
 $color-white: #fff;
+
+// Borders
+// -------------------------
+$border-success: 5px solid $color-success;
+$border-alert: 5px solid $color-alert;
+$border-warning: 5px solid $color-warning;
+$border-danger: 5px solid $color-danger;
+
+$border-radius-sm: 3px;
+$border-radius-med: 5px;
 
 // Typography
 // -------------------------
@@ -82,6 +92,3 @@ $font-size-xxs: 10px;
 // -------------------------
 $box-shadow-default: 0 rem(1px) rem(3px) 0 rgba($color-gray0, 0.09);
 $box-shadow-darker: 0 rem(3px) rem(9px) 0 rgba($color-gray0, 0.18);
-
-$border-radius-sm: 3px;
-$border-radius-med: 5px;

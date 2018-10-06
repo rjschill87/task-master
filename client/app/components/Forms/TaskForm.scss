@@ -33,6 +33,19 @@
   }
 }
 
+.tm-c-form-group {
+  display: flex;
+
+  > * {
+    flex: 1;
+    height: auto;
+  }
+
+  > *:not(:last-child) {
+		margin-right: rem($space-sm);
+  }
+}
+
 .tm-c-tasklist-form-error {
   color: $color-danger;
   align-self: center;

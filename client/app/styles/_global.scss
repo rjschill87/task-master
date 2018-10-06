@@ -12,7 +12,11 @@ body {
   line-height: 1.4em;
 }
 
-input, textarea {
+input, textarea, select {
   @include placeholderStyles;
   @include inputStyles;  
+}
+
+select {
+  @include selectStyles;
 }

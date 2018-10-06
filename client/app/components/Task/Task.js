@@ -72,8 +72,6 @@ class Task extends Component {
     this.expandTask = this.expandTask.bind(this);
     this.completeTask = this.completeTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
-    this.renderTags = this.renderTags.bind(this);
-    this.createTimeString = this.createTimeString.bind(this);
   }
 
   expandTask() {
@@ -125,44 +123,74 @@ class Task extends Component {
     }
   }
 
+  createClassList() {
+    let classString = 'tm-c-task-wrapper';
+
+    if (this.props.completed) {
+      classString =  `${classString} tm-c-task-wrapper__completed`;
+    }
+
+    if (this.props.priority !== '') {
+      let { priority } = this.props;
+      priority = priority.toLowerCase();
+      classString = `${classString} tm-c-task-wrapper__${priority}-priority`;
+    }
+
+    return classString;
+  }
+
   render() {
     const {
+      _id,
+      name,
+      completed,
+      description,
+      childTasks,
+      onUpdate,
+      assignedTo,
+      points,
+      priority,
       isDragging,
       connectDragSource,
       connectDropTarget
     } = this.props;
+
+    const classList = this.createClassList();
     
     return (
       connectDragSource &&
       connectDropTarget &&
       connectDragSource(
         connectDropTarget(
-          <li style={{opacity: (isDragging) ? 0 : 1}} className={(this.props.completed) ? "tm-c-task-wrapper tm-c-task-wrapper__completed" : "tm-c-task-wrapper"} id={this.props._id}>
+          <li style={{opacity: (isDragging) ? 0 : 1}} className={classList} id={_id}>
             <div className="tm-c-task-container">
               <header className="tm-c-task-header">
                 <span className="tm-c-task-expander" onClick={this.expandTask}> {!this.state.expanded ? '+' : '-'} </span>
                 <h3 className="tm-c-task-header-title">
-                  {(this.props.completed) ? this.props.name + ' (Completed)' : this.props.name}
+                  {(completed) ? name + ' (Completed)' : name}
                 </h3>
               </header>
               <div className={(this.state.expanded) ? 'tm-c-task-body-container tm-c-task-body-container__expanded' : 'tm-c-task-body-container'}>
                 <div className="tm-c-task-body tm-c-task-body__left">
                   <div className="tm-c-task-description">
-                    {this.props.description}
+                    {description}
                   </div>
                   <div className="tm-c-child-tasks-container">
-                    <ChildTaskList parentId={this.props._id} childTasks={this.props.childTasks} onUpdate={this.props.onUpdate} />
+                    <ChildTaskList parentId={_id} childTasks={childTasks} onUpdate={onUpdate} />
                   </div>
                 </div>
                 <div className="tm-c-task-body tm-c-task-body__right">
                   <div className="tm-c-task-details">
-                    {this.props.assignedTo != '' ? 'Assigned to ' + this.props.assignedTo : ''}
+                    {priority != '' ? `${priority} Priority` : ''}
+                  </div>
+                  <div className="tm-c-task-details">
+                    {assignedTo != '' ? `Assigned to: ${assignedTo}` : ''}
                   </div>
                   <div className="tm-c-task-details">
                     {this.createTimeString()}
                   </div>
                   <div className="tm-c-task-details">
-                    {this.props.points && parseInt(this.props.points) ? this.props.points + ' pts.' : ''}
+                    {points && parseInt(points) ? `${points} pts.` : ''}
                   </div>
                 </div>
               </div>
@@ -176,7 +204,7 @@ class Task extends Component {
                   </div>
                   <div className="tm-c-button-container tm-c-button-container__right">
                     {
-                      !this.props.completed &&
+                      !completed &&
                       <Button
                         modifiers={['primary']}
                         onClick={this.completeTask}
